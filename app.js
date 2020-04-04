@@ -139,7 +139,7 @@ function redisplayTagTable() {
         row.appendChild(td2);
         row.appendChild(td3);
         row.appendChild(td4);
-        tbodyList.appendChild(row);
+        tbodyList.prepend(row);
 
         if (typeof summary[region.data.note] === 'undefined') {
             summary[region.data.note] = 0;
