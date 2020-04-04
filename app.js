@@ -3,6 +3,9 @@
  */
 var wavesurfer;
 
+var filename = 'audio/daily-2020-04-03.mp3';
+var filename = 'audio/sample.mp3';
+
 /**
  * Init & load.
  */
@@ -30,7 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         ]
     });
-    wavesurfer.load('daily-2020-03-21.mp3');
+    wavesurfer.load(filename);
+    document.querySelector('h1').textContent = 'Loading: ' + filename;
 
     /* Regions */
 
@@ -58,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     saveRegions();
                 });
         }
+        redisplayTagTable();
     });
     wavesurfer.on('region-click', function(region, e) {
         e.stopPropagation();
@@ -93,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * Save annotations to localStorage.
  */
 function saveRegions() {
+    redisplayTagTable();
     localStorage.regions = JSON.stringify(
         Object.keys(wavesurfer.regions.list).map(function(id) {
             var region = wavesurfer.regions.list[id];
@@ -104,6 +110,30 @@ function saveRegions() {
             };
         })
     );
+}
+
+function redisplayTagTable() {
+    var tbody = document.querySelector('.table tbody');
+    console.log('tbody', tbody)
+    // clear all
+    tbody.innerHTML = '';
+    Object.keys(wavesurfer.regions.list).forEach(function(id) {
+        var region = wavesurfer.regions.list[id];
+        var row = document.createElement('tr');
+        var td1 = document.createElement('td');
+        var td2 = document.createElement('td');
+        var td3 = document.createElement('td');
+        var td4 = document.createElement('td');
+        td1.textContent = region.start.toFixed(2) + 's';
+        td2.textContent = region.end.toFixed(2) + 's';
+        td3.textContent = (region.end - region.start).toFixed(2) + 's';
+        td4.textContent = region.data.note;
+        row.appendChild(td1);
+        row.appendChild(td2);
+        row.appendChild(td3);
+        row.appendChild(td4);
+        tbody.appendChild(row);
+    })
 }
 
 /**

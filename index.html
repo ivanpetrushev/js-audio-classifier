@@ -6,8 +6,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Annotations</title>
     <!-- Bootstrap -->
-<!--    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">-->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="app.css" rel="stylesheet">
 
     <!-- wavesurfer.js -->
     <script src="https://unpkg.com/wavesurfer.js/dist/wavesurfer.js"></script>
@@ -22,6 +22,7 @@
 </head>
 <body itemscope itemtype="http://schema.org/WebApplication">
 <div class="container">
+    <h1></h1>
     <div id="demo">
         <p id="subtitle" class="text-center text-info">&nbsp;</p>
 
@@ -71,18 +72,11 @@
             <div class="col">
                 <input class="form-control" id="end" name="end"/>
             </div>
-        </div>
 
-        <div class="row">
             <div class="col">
-                <div class="form-group">
-                    <label for="note">Note</label>
-                    <textarea id="note" class="form-control" rows="3" name="note"></textarea>
-                </div>
+                <input class="form-control" id="note" name="note" placeholder="Tags:"/>
             </div>
-        </div>
 
-        <div class="row">
             <div class="col">
                 <button type="submit" class="btn btn-success btn-block">Save</button>
             </div>
@@ -91,6 +85,20 @@
             </div>
         </div>
     </form>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Start</th>
+            <th scope="col">End</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Tags</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
 </div>
 
 </body>
