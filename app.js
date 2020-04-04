@@ -147,7 +147,8 @@ function redisplayTagTable() {
         summary[region.data.note] += parseFloat(duration);
     });
 
-    Object.keys(summary).forEach(function(tag) {
+    var sortedKeys = getSortedKeys(summary);
+    sortedKeys.forEach(function(tag) {
         var row = document.createElement('tr');
         var td1 = document.createElement('td');
         var td2 = document.createElement('td');
@@ -378,4 +379,9 @@ function saveJSON(data, filename){
     a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':')
     e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
     a.dispatchEvent(e)
+}
+
+function getSortedKeys(obj) {
+    var keys = keys = Object.keys(obj);
+    return keys.sort(function(a,b){return obj[b]-obj[a]});
 }
