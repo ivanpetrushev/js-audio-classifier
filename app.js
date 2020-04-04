@@ -114,7 +114,6 @@ function saveRegions() {
 
 function redisplayTagTable() {
     var tbody = document.querySelector('.table tbody');
-    console.log('tbody', tbody)
     // clear all
     tbody.innerHTML = '';
     Object.keys(wavesurfer.regions.list).forEach(function(id) {
@@ -141,7 +140,8 @@ function redisplayTagTable() {
  */
 function loadRegions(regions) {
     regions.forEach(function(region) {
-        region.color = randomColor(0.1);
+        // region.color = randomColor(0.1);
+        region.color = hashColor(region.data.note);
         wavesurfer.addRegion(region);
     });
 }
@@ -230,6 +230,34 @@ function randomColor(alpha) {
 }
 
 /**
+ * Set color for each different `value`
+ * @param value
+ */
+function hashColor(value) {
+    var hash = hashCode(value);
+    hash = Math.abs(hash);
+    var color =
+        'rgba(' +
+        [
+            (hash & 0xff000000) >> 24,
+            (hash & 0x00ff0000) >> 16,
+            (hash & 0x0000ff00) >> 8,
+            0.1
+        ] +
+        ')';
+    // console.log('value', value, '=>', hash, color)
+    return color;
+}
+
+function hashCode(s) {
+    var h = 0, l = s.length, i = 0;
+    if ( l > 0 )
+        while (i < l)
+            h = (h << 5) - h + s.charCodeAt(i++) | 0;
+    return h;
+}
+
+/**
  * Edit annotation for a region.
  */
 function editAnnotation(region) {
@@ -279,7 +307,6 @@ window.GLOBAL_ACTIONS['delete-region'] = function() {
 };
 
 window.GLOBAL_ACTIONS['export'] = function() {
-    console.log('bau', localStorage.regions)
     saveJSON(localStorage.regions, 'annotations.json')
     // window.open(
     //     'data:application/json;charset=utf-8,' +
