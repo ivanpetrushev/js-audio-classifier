@@ -125,6 +125,16 @@ function redisplayTagTable() {
         var duration = (region.end - region.start).toFixed(2);
         td3.textContent = duration + 's';
         td4.textContent = region.data.note;
+
+        var btnGo = document.createElement('button');
+        btnGo.setAttribute('class', 'btn btn-info btn-go');
+        btnGo.textContent = 'Go';
+        btnGo.setAttribute('start', region.start.toFixed(2))
+        btnGo.addEventListener('click', function(e) {
+            wavesurfer.play(this.getAttribute('start'));
+        });
+        td1.prepend(btnGo);
+
         row.appendChild(td1);
         row.appendChild(td2);
         row.appendChild(td3);
@@ -265,7 +275,7 @@ function hashColor(value) {
     return color;
 }
 
-function hashCode(s) {
+function hashCode(s = '') {
     var h = 0, l = s.length, i = 0;
     if ( l > 0 )
         while (i < l)
@@ -292,7 +302,6 @@ function editAnnotation(region) {
             },
             color: hashColor(form.elements.note.value)
         });
-        console.log('just updated region', region);
         form.style.opacity = 0;
     };
     form.onreset = function() {
