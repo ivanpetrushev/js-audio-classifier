@@ -4,7 +4,7 @@
 var wavesurfer;
 
 var filename = 'audio/daily-2020-04-03.mp3';
-var filename = 'audio/sample.mp3';
+// var filename = 'audio/sample.mp3';
 
 /**
  * Init & load.
@@ -52,15 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
             //         wavesurfer.getDuration()
             //     )
             // );
-            wavesurfer.util
-                .ajax({
-                    responseType: 'json',
-                    url: 'annotations.json'
-                })
-                .on('success', function(data) {
-                    loadRegions(data);
-                    saveRegions();
-                });
         }
         redisplayTagTable();
     });
@@ -307,11 +298,27 @@ window.GLOBAL_ACTIONS['delete-region'] = function() {
 };
 
 window.GLOBAL_ACTIONS['export'] = function() {
-    saveJSON(localStorage.regions, 'annotations.json')
-    // window.open(
-    //     'data:application/json;charset=utf-8,' +
-    //     encodeURIComponent(localStorage.regions)
-    // );
+    var jsonFilename = filename.split(/[\\/]/).pop();
+    jsonFilename = jsonFilename.replace('mp3', 'json');
+    saveJSON(localStorage.regions, jsonFilename);
+};
+
+window.GLOBAL_ACTIONS['load'] = function() {
+    wavesurfer.clearRegions();
+
+    var jsonFilename = filename.split(/[\\/]/).pop();
+    jsonFilename = jsonFilename.replace('mp3', 'json');
+    wavesurfer.util
+        .ajax({
+            responseType: 'json',
+            url: 'audio/' + jsonFilename
+        })
+        .on('success', function(data) {
+            // console.log('got JSON!', data)
+            loadRegions(data);
+            saveRegions();
+            redisplayTagTable();
+        });
 };
 
 function saveJSON(data, filename){
