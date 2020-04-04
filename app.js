@@ -104,9 +104,12 @@ function saveRegions() {
 }
 
 function redisplayTagTable() {
-    var tbody = document.querySelector('.table tbody');
+    var summary = {};
+    var tbodyList = document.querySelector('.table.taglist tbody');
+    var tbodySummary = document.querySelector('.table.tagsummary tbody');
     // clear all
-    tbody.innerHTML = '';
+    tbodyList.innerHTML = '';
+    tbodySummary.innerHTML = '';
     Object.keys(wavesurfer.regions.list).forEach(function(id) {
         var region = wavesurfer.regions.list[id];
         var row = document.createElement('tr');
@@ -116,14 +119,31 @@ function redisplayTagTable() {
         var td4 = document.createElement('td');
         td1.textContent = region.start.toFixed(2) + 's';
         td2.textContent = region.end.toFixed(2) + 's';
-        td3.textContent = (region.end - region.start).toFixed(2) + 's';
+        var duration = (region.end - region.start).toFixed(2);
+        td3.textContent = duration + 's';
         td4.textContent = region.data.note;
         row.appendChild(td1);
         row.appendChild(td2);
         row.appendChild(td3);
         row.appendChild(td4);
-        tbody.appendChild(row);
-    })
+        tbodyList.appendChild(row);
+
+        if (typeof summary[region.data.note] === 'undefined') {
+            summary[region.data.note] = 0;
+        }
+        summary[region.data.note] += parseFloat(duration);
+    });
+
+    Object.keys(summary).forEach(function(tag) {
+        var row = document.createElement('tr');
+        var td1 = document.createElement('td');
+        var td2 = document.createElement('td');
+        td1.textContent = tag;
+        td2.textContent = summary[tag].toFixed(2);
+        row.appendChild(td1);
+        row.appendChild(td2);
+        tbodySummary.appendChild(row);
+    });
 }
 
 /**
