@@ -1,3 +1,6 @@
+var colorPallete = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe',
+    '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080'];
+
 /**
  * Create a WaveSurfer instance.
  */
@@ -247,15 +250,17 @@ function randomColor(alpha) {
 function hashColor(value) {
     var hash = hashCode(value);
     hash = Math.abs(hash);
-    var color =
-        'rgba(' +
-        [
-            (hash & 0xff000000) >> 24,
-            (hash & 0x00ff0000) >> 16,
-            (hash & 0x0000ff00) >> 8,
-            0.1
-        ] +
-        ')';
+    hash = hash % colorPallete.length;
+    var color = colorPallete[hash] + '30'; // add alpha
+    // var color =
+    //     'rgba(' +
+    //     [
+    //         (hash & 0xff000000) >> 24,
+    //         (hash & 0x00ff0000) >> 16,
+    //         (hash & 0x0000ff00) >> 8,
+    //         0.1
+    //     ] +
+    //     ')';
     // console.log('value', value, '=>', hash, color)
     return color;
 }
@@ -284,8 +289,10 @@ function editAnnotation(region) {
             end: form.elements.end.value,
             data: {
                 note: form.elements.note.value
-            }
+            },
+            color: hashColor(form.elements.note.value)
         });
+        console.log('just updated region', region);
         form.style.opacity = 0;
     };
     form.onreset = function() {
