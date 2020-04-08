@@ -6,7 +6,7 @@ var colorPallete = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911
  */
 var wavesurfer;
 
-var filename = 'audio/daily-2020-04-03.mp3';
+var filename = 'audio/daily-2020-04-04.mp3';
 // var filename = 'audio/sample.mp3';
 
 /**
@@ -356,6 +356,10 @@ window.GLOBAL_ACTIONS['load'] = function() {
             saveRegions();
             redisplayTagTable();
         });
+};
+
+window.GLOBAL_ACTIONS['clear-all'] = function() {
+    wavesurfer.clearRegions();
 };
 
 function saveJSON(data, filename){
